@@ -1,0 +1,15 @@
+[submodule "sources/buildroot-rootfs"]
+	path = sources/buildroot-rootfs
+	url = ../busybox-rootfs
+[submodule "sources/altera-uboot"]
+	path = sources/altera-uboot
+	url = ../altera-uboot
+[submodule "buildscripts"]
+	path = buildscripts
+	url = ../enclustra-buildscripts
+[submodule "sources/altera-linux"]
+	path = sources/altera-linux
+	url = ../altera-linux
+[submodule "sources/altera-linux-rt"]
+	path = sources/altera-linux-rt
+	url = ../altera-linux
