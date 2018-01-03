@@ -1,4 +1,4 @@
-#Enclustra Build Environment
+# Enclustra Build Environment
 
 Enclustra Build Environment is a tool which allows the user to quickly setup and run all of the Enclustra boards using the Altera Soc modules.
 It allows the user to choose the desired target, and downloads all the required binaries like the bitstream and fsbl. It downloads and compiles software such as U-Boot, Linux, and Buildroot based root file system.
