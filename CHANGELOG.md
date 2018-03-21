@@ -1,6 +1,31 @@
 Change Log
 ==========
 
+Version 1.6 (2018-03-21)
+------------------------
+
+* rootfs overlays mechanism (for example for installing kernel modules into buildroot rootfs)
+* proper binaries versioning using a new templates mechanism in config files
+* automatic detection for number of threads to build on (based on host CPU)
+* minor project mode fixes
+* bug fixes
+* updated user documentation
+* U-Boot changes:
+    - bumped to 2017.07
+    - cadence QSPI driver fixed
+    - added commands for runtime sd/emmc muxing for Mars MA3 module
+    - added commands for runtime qspi/sd/emmc muxing for Mercury+ AA1 module
+    - minor bug fixes
+* finished Mercury+ AA1 support in Linux and U-Boot (added support for all possible boot modes)
+* new Mercury+ AA1 variants support (rev 2):
+    - Arria 10 SX480, Speed Grade E1
+    - Arria 10 SX480, Speed Grade I2
+    - Arria 10 SX270, Speed Grade E3
+    - Arria 10 SX270, Speed Grade I2
+* Mars MA3 support:
+    - Cyclone V A5, Speed Grade C8
+    - Cyclone V C6, Speed Grade I7
+
 Version 1.5 (2017-06-28)
 ------------------------
 
