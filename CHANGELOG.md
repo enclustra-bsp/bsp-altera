@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+Version 1.7 (2018-11)
+---------------------
+
+* bumped Linux kernel version to 4.15
+* bumped U-Boot version to V2018.05
+* bumped Buildroot version to V2018.05.1
+* bumped GCC version to 7.2.0
+* updated documentation:
+    - added new "Updating the binaries" section
+    - updated build script help message
+* bug fixes
+
 Version 1.6 (2018-03-21)
 ------------------------
 
