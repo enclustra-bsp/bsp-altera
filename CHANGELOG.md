@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 1.7 (2018-11)
+Version 1.7 (2018-11-22)
 ---------------------
 
 * bumped Linux kernel version to 4.15
