@@ -43,6 +43,6 @@ The following arguments are supported:
       -v, --version                 print version
 
 
-Please refer to the [user documentation](http://enclustra.github.io/ebe-docs/user-doc-altera/) for more information about the usage of the build system.
+Please refer to the [user documentation](http://enclustra.github.io/ebe-docs/user-doc-altera/index_altera.html) for more information about the usage of the build system.
 
 Copyright (c) 2015-2018, Enclustra GmbH, Switzerland
