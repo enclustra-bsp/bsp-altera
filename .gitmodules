@@ -10,6 +10,3 @@
 [submodule "sources/altera-linux"]
 	path = sources/altera-linux
 	url = ../altera-linux
-[submodule "sources/altera-linux-rt"]
-	path = sources/altera-linux-rt
-	url = ../altera-linux
