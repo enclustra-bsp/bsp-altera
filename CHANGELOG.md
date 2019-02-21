@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+Version 1.8 (2019-02-22)
+------------------------
+
+* added new Mercury SA1 rev3, available variants:
+    - Altera SocFPGA C6, speed grade I7
+    - Altera SocFPGA C6, speed grade C8
+* added EMMC boot support for SA1 rev3
+* U-Boot environment is stored on the same device as boot device
+* removed RTLinux targets
+* bug fixes
+
 Version 1.7 (2018-11-22)
 ---------------------
 
