@@ -19,7 +19,7 @@ This will not overwrite the stored environment but will only restore the default
 > **_Note:_**  A `*** Warning - bad CRC, using default environment` warning message that appears when booting into U-Boot indicates that the default environment will be loaded.
 
 Boot storage | Offset | Size
---- | --- | --- | ---
+--- | --- | ---
 MMC | partition 1 (FAT) | 0x80000
 eMMC | partition 1 (FAT) | 0x80000
 QSPI | 0x180000 | 0x80000
@@ -144,7 +144,7 @@ SF: Detected S25FL512S_256K with page size 512 Bytes, erase size 256 KiB, total 
 
 In order to deploy images to an SD card, perform the following steps as root:
 
-1. Partition your SD Card according to section: [SD Card Partitioning](sd-card-partitioning)
+1. Partition your SD Card according to section: [SD Card Partitioning](#sd-card-partitioning)
 
 2. Copy all required files to the FAT partition on the SD card:
 
@@ -186,7 +186,7 @@ run mmcboot
 
 On the Mercury SA1-R3 and Mercury AA1+ modules the MMC bus lines are shared between eMMC flash and SD card. It is not possible to simultaneously access the SD card and eMMC memory. In the following approach an SD card is used to transfer the data including all the partitions to the eMMC memory.
 
-1. Prepare 2 bootable SD cards (See section [SD Card Partitioning](sd-card-partitioning) for the steps required to prepare an SD card):
+1. Prepare 2 bootable SD cards (See section [SD Card Partitioning](#sd-card-partitioning) for the steps required to prepare an SD card):
     - One with a default SD card image, which is only used to boot until U-Boot console.
     - The second SD card contains the image to be written to the eMMC flash. Make sure that the image to be written to the eMMC is small enough to fit into the DDR memory. E.g. set a rootfs size of 300Mbyte. The rootfs partition size can be increased in a later step.
 
@@ -253,7 +253,7 @@ q
 
 The QSPI flash can be programmed via JTAG with the vendor tools. An alternative is described following. It requires booting from SD card to update the QSPI flash in U-Boot.
 
-1. Prepare an SD card according to section [SD Card](sd-card)
+1. Prepare an SD card according to section [SD Card](#sd-card)
 
 2. Create a directory on the SD card and copy the required files for QSPI boot to the SD card into this newly created directory. The directory name is assumed `qspi` in the following steps.
 
