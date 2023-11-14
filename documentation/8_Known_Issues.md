@@ -44,4 +44,15 @@ All Mercury+ AA1 product models on PE1, ST1 and PE1 baseboards.
 
 USB host mode does not work in U-Boot because the U-Boot USB driver does not support overriding the mode dictated by the USB ID signal.
 
+### 5. Root file system image grows with each build
+
+#### Affected hardware
+
+All builds with EBE are affected.
+
+#### Description
+
+When multiple builds are created in the same bsp-altera directory, the rootfs size is growing with each completed build. This is a problem for QSPI boot, because the rootfs size grows bigger than the QSPI flash size.
+The issue is caused by kernel modules which are copied as overlay to the root file system. Each time the kernel gets rebuilt, a new set of kernel modules is copied to the root file system without deleting the already existing ones. As workaround, all subdirectories in `sources/buildroot-rootfs/output/target/lib/modules` can be deleted before a new build is started.
+
 Last Page: [FAQ](./7_FAQ.md)

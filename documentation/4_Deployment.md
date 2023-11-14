@@ -78,7 +78,6 @@ t
 83
 # write changes and exit
 w
-q
 ```
 
 Format the 1st and 3rd partitions:
@@ -176,7 +175,7 @@ dd if=u-boot-with-spl.sfp of=/dev/sdX2 # For Cyclone V devices
 If one wants to manually trigger booting from a SD Card, the following command has to be invoked from the U-Boot command line:
 
 ```
-run mmcboot
+run mmc_boot
 ```
 
 > **_Note:_**  If `saveenv` command is used in U-boot to save the U-Boot environment, a `uboot.env` file will appear on the FAT partition of the SD card.
@@ -198,6 +197,7 @@ On the Mercury SA1-R3 and Mercury AA1+ modules the MMC bus lines are shared betw
 4. Copy the SD card content into the DDR memory (assuming the total size is smaller than 512Mbyte)
 
 ```
+mmc rescan
 mmc dev 0
 mmc read 0 0 0x100000   # copy 512Mbyte of data (block size = 512bytes)
 ```
@@ -215,7 +215,9 @@ mmc rescan
 mmc write 0 0 0x100000
 ```
 
-7. Optional: If a bigger rootfs partition is required, it can be increased after booting from eMMC memory into Linux. The data on the disk will be preserved while the partition table is modified.
+7. When completed, remove the SD card and configure the hardware for eMMC boot.
+
+8. Optional: If a bigger rootfs partition is required, it can be increased after booting from eMMC memory into Linux. The data on the disk will be preserved while the partition table is modified.
 
 Run fdisk tool:
 
@@ -229,12 +231,21 @@ Within fdisk run the following commands:
 # delete rootfs partition
 d
 3
+# show partition table
+p
+
+# as example, following is shown
+Device       Boot StartCHS    EndCHS        StartLBA     EndLBA    Sectors  Size Id Type
+/dev/mmcblk0p1    0,32,33     12,223,19         2048     206847     204800  100M  c Win95 FAT32 (LBA)
+/dev/mmcblk0p2    12,223,20   13,33,20        206848     210943       4096 2048K a2 Unknow
+
 # create a new partition
 n
 p
 3
-# leave default start and end sector
-
+# set last sector of a2 partition plus one as first sector, as printed in the partition table in column 'EndLBA'
+210944
+# leave default end sector
 
 # set the 3rd partition type to Linux
 t
@@ -242,9 +253,13 @@ t
 83
 # write changes and exit
 w
-q
 ```
 
+Reboot and run following command to resize the partition
+
+```
+resize2fs /dev/mmcblk0p3
+```
 
 > **_Note:_**  If `saveenv` command is used in U-boot to save the U-Boot environment, a `uboot.env` file will appear on the FAT partition of the eMMC flash.
 
@@ -257,7 +272,7 @@ The QSPI flash can be programmed via JTAG with the vendor tools. An alternative 
 
 2. Create a directory on the SD card and copy the required files for QSPI boot to the SD card into this newly created directory. The directory name is assumed `qspi` in the following steps.
 
-3. Boot from SD card until U-Boot console
+3. Configure the hardware to boot from SD card and boot from SD card until U-Boot console
 
 4. Copy the files from the SD card to the DDR memory and write the data into the QSPI flash
 
@@ -265,27 +280,36 @@ The QSPI flash can be programmed via JTAG with the vendor tools. An alternative 
 sf probe
 mmc dev 0
 fatload mmc 0:1 0 qspi/u-boot-splx4.sfp
-sf update 0 $qspi_offset_addr_spl $filesize
+sf update 0 ${qspi_offset_addr_spl} $filesize
 
 fatload mmc 0:1 0 qspi/u-boot.img
-sf update 0 $qspi_offset_addr_u-boot $filesize
+sf update 0 ${qspi_offset_addr_u-boot} $filesize
 
 fatload mmc 0:1 0 qspi/boot.scr
-sf update 0 $qspi_offset_addr_boot-script $filesize
+sf update 0 ${qspi_offset_addr_boot-script} $filesize
 
-fatload mmc 0:1 0 qspi/devicetreee.dtb
-sf update 0 $qspi_offset_addr_devicetree $filesize
+fatload mmc 0:1 0 qspi/devicetree.dtb
+sf update 0 ${qspi_offset_addr_devicetree} $filesize
 
 fatload mmc 0:1 0 qspi/bitstream.itb    # fpga.rbf for Cyclone V devices
-sf update 0 $qspi_offset_addr_bitstream $filesize
+sf update 0 ${qspi_offset_addr_bitstream} $filesize
 
 fatload mmc 0:1 0 qspi/uImage
-sf update 0 $qspi_offset_addr_kernel $filesize
+sf update 0 ${qspi_offset_addr_kernel} $filesize
 
 fatload mmc 0:1 0 qspi/uramdisk
-sf update 0 $qspi_offset_addr_rootfs $filesize
+sf update 0 ${qspi_offset_addr_rootfs} $filesize
 ```
 
+5. Remove the SD card and configure the hardware for QSPI boot.
+
+If one wants to manually trigger booting from QSPI flash, the following commands have to be invoked from the U-Boot command line:
+
+```
+sf probe
+run qspiload
+run qspiboot
+```
 
 #### QSPI Flash Layouts
 
