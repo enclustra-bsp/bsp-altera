@@ -44,7 +44,7 @@ optional arguments:
   --anti-unicorn                disables colored output
   --expert-mode                 expert mode: prepare the environment for
                                 building the whole system manually
-  -o index, --dev-option index  set device option by index, the default one
+  -o name, --dev-option name    set device option by name, the default one
                                 will be used if not specified
   --generate-project            generate project directory instead of a
                                 regular output
@@ -96,10 +96,10 @@ Available options for Mercury_AA1/Mercury_ST1/MMC:
 3. ME-AA1-480-2I3-D12E-NFX3 (default)
 ```
 
-The `-o` option allows the user to choose a device option for the selected device by providing the index of a specific device option.
+The `-o` option allows the user to choose a device option for the selected device by providing the name of a specific device option.
 
 ```
-./build.sh -d Mercury_AA1/Mercury_ST1/MMC -x Linux -o 1
+./build.sh -d Mercury_AA1/Mercury_ST1/MMC -x Linux -o ME-AA1-270-3E4-D11E-NFX3
 ```
 
 If no device option is selected, the default one will be used.
