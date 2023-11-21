@@ -8,7 +8,13 @@ If a user wants to modify the FPGA design, the binaries can be updated in two wa
 
 1. By changing the path to custom binaries in the graphical user interface. See step 12 in [GUI](./2_GUI.md).
 
-2. By using the project mode:
+2. By adding the custom binary as argument for the command line interface. E.g.
+
+```
+./build.sh -d Mercury_SA1/Mercury_ST1/MMC -B handoff <absolute-path>/hps_isw_handoff -B fpga.rbf <absolute-path>/refdes.rbf
+```
+
+3. By using the project mode:
 
    1. Enable project mode in the Enclustra Build Environment.
 

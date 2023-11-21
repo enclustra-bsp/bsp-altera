@@ -142,6 +142,36 @@ chmod +x flash.sh
 ```
 
 
+### Read serial number of module
+
+The serial number of the module can be read by following command:
+
+    cat /sys/bus/i2c/devices/0-0064/serial
+
+The serial number is reported as follows:
+
+    248173
+
+Note that this is only supported on modules equipped with an Atmel EEPROM (Mercury+ SA2, Mercury+ AA1).
+
+
+### Configure SI5338 clock generator on Mercury+ PE1 and Mercury+ ST1 base board
+
+The U-Boot driver `<bsp-altera>/sources/altera-uboot/drivers/misc/si5338_config.c` adds support to configure the SI5338 clock generator device. To enable the configuration, follow the steps below:
+
+1. Create a configuration with Skyworks [ClockBuilder Pro software](https://www.skyworksinc.com/Application-Pages/Clockbuilder-Pro-Software) and export the C code header file.
+2. Copy the exported header file `Si5338-RevB-Registers.h` to `<bsp-altera>/sources/altera-uboot/drivers/misc` directory.
+3. Make following change to the file `<bsp-altera>/sources/altera-uboot/configs/socfpga_enclustra_*_defconfig`:
+
+       CONFIG_SI5338_CONFIGURATION=y
+
+Note that the file to be modified depends on the module and boot mode. One of the following files needs to be chosen:
+
+- socfpga_enclustra_mercury_aa1_defconfig
+- socfpga_enclustra_mercury_sa1_mmc_defconfig
+- socfpga_enclustra_mercury_sa1_qspi_defconfig
+- socfpga_enclustra_mercury_sa2_mmc_defconfig
+- socfpga_enclustra_mercury_sa2_qspi_defconfig
 
 
 Last Page: [Updating the binaries](./6_Binaries_Update.md)
