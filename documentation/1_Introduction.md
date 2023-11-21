@@ -23,6 +23,8 @@
 * [FAQ](./7_FAQ.md)
     - [How to script U-Boot?](./7_FAQ.md#how-to-script-u-boot)
     - [How can the flash memory be programmed from Linux?](./7_FAQ.md#how-can-the-flash-memory-be-programmed-from-linux)
+    - [Read serial number of module](./7_FAQ.md/#read-serial-number-of-module)
+    - [Configure SI5338 clock generator on Mercury+ PE1 and Mercury+ ST1 base board](./7_FAQ.md/#configure-si5338-clock-generator-on-mercury-pe1-and-mercury-st1-base-board)
 * [Known Issues](./8_Known_Issues.md)
 
 
