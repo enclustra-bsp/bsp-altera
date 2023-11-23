@@ -80,7 +80,7 @@ getsize ()
 }
 
 SPL_FILE="u-boot-splx4.sfp"
-U-BOOT_FILE="u-boot.img"
+UBOOT_FILE="u-boot.img"
 SCRIPT_FILE="boot.scr"
 DEVICETREE_FILE="devicetree.dtb"
 BITSTREAM_FILE="bitstream.itb"
@@ -88,7 +88,7 @@ KERNEL_FILE="uImage"
 ROOTFS_FILE="uramdisk"
 
 SPL_OFFSET=0x0
-U-BOOT_OFFSET=0x100000
+UBOOT_OFFSET=0x100000
 SCRIPT_OFFSET=0x200000
 DEVICETREE_OFFSET=0x280000
 BITSTREAM_OFFSET=0x300000
@@ -104,9 +104,9 @@ echo writing SPL file ${SPL_FILE} size ${FILESIZE}
 mtd_debug write /dev/mtd0 ${SPL_OFFSET} ${FILESIZE} ${SPL_FILE}
 
 # write U-Boot
-FILESIZE=`getsize ${U-BOOT_FILE}`
-echo writing U-Boot file ${U-BOOT_FILE} size ${FILESIZE}
-mtd_debug write /dev/mtd0 ${U-BOOT_OFFSET} ${FILESIZE} ${U-BOOT_FILE}
+FILESIZE=`getsize ${UBOOT_FILE}`
+echo writing U-Boot file ${UBOOT_FILE} size ${FILESIZE}
+mtd_debug write /dev/mtd0 ${UBOOT_OFFSET} ${FILESIZE} ${UBOOT_FILE}
 
 # write U-Boot script
 FILESIZE=`getsize ${SCRIPT_FILE}`
