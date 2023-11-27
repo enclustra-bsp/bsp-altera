@@ -88,7 +88,7 @@ The required packages can be installed with the following commands:
 
 ```
 sudo apt update
-sudo apt install python2 dialog make git mercurial tar unzip curl wget bc libssl-dev patch rsync autoconf g++ gcc flex bison u-boot-tools
+sudo apt install python2 dialog make git tar unzip curl wget bc libssl-dev patch rsync autoconf g++ gcc flex bison u-boot-tools
 ```
 
 
