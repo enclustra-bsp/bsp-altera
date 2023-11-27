@@ -55,7 +55,10 @@ This chapter describes the usage of the build environment. The whole build envir
 
 #### Prerequisites
 
-The supported OS for the build environment is: Ubuntu 20.04 LTS
+The build environment was tested on following host Linux distributions:
+
+- Ubuntu 20.04 LTS
+- Ubuntu 22.04 LTS
 
 To run the build script a Python 2 interpreter is required.
 
@@ -66,7 +69,6 @@ Tool |  Comments
 dialog |  Required only in the GUI mode
 make |
 git |
-mercurial |
 tar |
 unzip |
 curl |
@@ -80,12 +82,13 @@ g++ |  Required to build a buildroot rootfs
 gcc |
 flex |
 bison |
+u-boot-tools |
 
 The required packages can be installed with the following commands:
 
 ```
 sudo apt update
-sudo apt install python2 dialog make git mercurial tar unzip curl wget bc libssl-dev patch rsync autoconf g++ gcc flex bison
+sudo apt install python2 dialog make git mercurial tar unzip curl wget bc libssl-dev patch rsync autoconf g++ gcc flex bison u-boot-tools
 ```
 
 
