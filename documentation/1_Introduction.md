@@ -138,13 +138,12 @@ Environment settings are stored in the enclustra.ini file in the main directory 
 
 ## Supported Devices
 
-Family          | Module       | Base boards
---------------- | ------------ | --------------
-Intel Cyclone V | Mercury SA1  | Mercury PE1 / PE3 / ST1
-Intel Cyclone V | Mercury+ SA2 | Mercury PE1 / PE3 / ST1
-Intel Arria 10  | Mercury+ AA1 | Mercury PE1 / PE3 / ST1
+Family          | Module , Revision | Base boards
+--------------- | ----------------- | --------------
+Intel Cyclone V | Mercury  SA1 , R3 | Mercury PE1 / PE3 / ST1
+Intel Cyclone V | Mercury+ SA2 , R1 | Mercury PE1 / PE3 / ST1
+Intel Arria 10  | Mercury+ AA1 , R2 | Mercury PE1 / PE3 / ST1
 
-> **_Note:_**  Since release 1.9, the Mars MA3 module is no longer supported.
-
+> **_Note:_**  Since release 1.9, Mars MA3, Mercury+ AA1 R1 and Mercury SA1 R1 and R2 are no longer supported.
 
 Next Page: [Graphical User Interface GUI](./2_GUI.md)
