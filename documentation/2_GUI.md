@@ -11,7 +11,7 @@ git clone https://github.com/enclustra-bsp/bsp-altera.git
 ```
 
 > **_Note:_**  By default the build script will fetch and build the latest EBE release. With the following command the development branch can be used. Please note that this branch is under development and the resulting software may be unstable. \
-> `git clone https://github.com/enclustra-bsp/bsp-altera.git -b develop`
+> `git clone https://github.com/enclustra-bsp/bsp-altera.git -b update`
 
 
 2. Change to the bsp-altera directory:

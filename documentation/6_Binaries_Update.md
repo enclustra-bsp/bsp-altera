@@ -10,6 +10,14 @@ If a user wants to modify the FPGA design, the binaries can be updated in two wa
 
 2. By adding the custom binary as argument for the command line interface. E.g.
 
+For Arria 10 devices:
+
+```
+./build.sh -d Mercury_AA1/Mercury_ST1/MMC -B handoff <absolute-path>/hps_isw_handoff -B bitstream.periph.rbf <absolute-path>/bitstream.periph.rbf -B bitstream.core.rbf <absolute-path>/bitstream.core.rbf
+```
+
+For Cyclone V devices:
+
 ```
 ./build.sh -d Mercury_SA1/Mercury_ST1/MMC -B handoff <absolute-path>/hps_isw_handoff -B fpga.rbf <absolute-path>/refdes.rbf
 ```
