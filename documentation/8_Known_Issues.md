@@ -50,7 +50,7 @@ In U-Boot, the I2C frequency is configured to be 100kHz. The frequency changes t
 
 #### Affected hardware
 
-All Mercury+ AA1 product models on PE1, ST1 and PE1 baseboards.
+All Mercury+ AA1 product models on PE1, ST1 and PE3 baseboards.
 
 #### Description
 

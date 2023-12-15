@@ -187,8 +187,7 @@ On the Mercury SA1-R3 and Mercury AA1+ modules the MMC bus lines are shared betw
 
 1. Prepare 2 bootable SD cards (See section [SD Card Partitioning](#sd-card-partitioning) for the steps required to prepare an SD card):
     - One with a default SD card image, which is only used to boot until U-Boot console.
-    - The second SD card contains the image to be written to the eMMC flash. Make sure that the image to be written to the eMMC is small enough to fit into the DDR memory. E.g. set a rootfs size of 300Mbyte. The rootfs partition size can be increased in a later step.
-
+    - The second SD card contains the image to be written to the eMMC flash. Make sure that the image to be written to the eMMC is small enough to fit into the DDR memory. The recommended partition sizes are: fat 50Mbyte, raw 2Mbyte, ext4 300Mbyte. The rootfs partition size can be increased in a later step.
 
 2. Boot from the first SD card until U-Boot console
 

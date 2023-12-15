@@ -28,6 +28,8 @@ cd bsp-altera
 
 5. Choose the configuration.
 
+This page is only visible after at least one configuration was created. The configuration files are stored in `${HOME}/.ebe/history-altera` directory.
+
    ![Choose config](./images/choose_config_altera.png)
 
 6. Choose the module type.
