@@ -275,29 +275,51 @@ The QSPI flash can be programmed via JTAG with the vendor tools. An alternative 
 
 4. Copy the files from the SD card to the DDR memory and write the data into the QSPI flash
 
+For Mercury SA1 and Mercury+ SA2:
+
 ```
-sf probe
 mmc dev 0
-fatload mmc 0:1 0 qspi/u-boot-splx4.sfp
-sf update 0 ${qspi_offset_addr_spl} $filesize
 
-fatload mmc 0:1 0 qspi/u-boot.img
-sf update 0 ${qspi_offset_addr_u-boot} $filesize
+fatload mmc 0:1 ${qspi_offset_addr_spl} qspi/u-boot-with-spl.sfp
+fatload mmc 0:1 ${qspi_offset_addr_boot-script} qspi/boot.scr
+fatload mmc 0:1 ${qspi_offset_addr_devicetree} qspi/devicetree.dtb
+fatload mmc 0:1 ${qspi_offset_addr_bitstream} qspi/fpga.rbf
+fatload mmc 0:1 ${qspi_offset_addr_kernel} qspi/uImage
+fatload mmc 0:1 ${qspi_offset_addr_rootfs} qspi/uramdisk
 
-fatload mmc 0:1 0 qspi/boot.scr
-sf update 0 ${qspi_offset_addr_boot-script} $filesize
+sf probe
 
-fatload mmc 0:1 0 qspi/devicetree.dtb
-sf update 0 ${qspi_offset_addr_devicetree} $filesize
+sf update ${qspi_offset_addr_spl} ${qspi_offset_addr_spl} $filesize
+sf update ${qspi_offset_addr_boot-script} ${qspi_offset_addr_boot-script} $filesize
+sf update ${qspi_offset_addr_devicetree} ${qspi_offset_addr_devicetree} $filesize
+sf update ${qspi_offset_addr_bitstream} ${qspi_offset_addr_bitstream} $filesize
+sf update ${qspi_offset_addr_kernel} ${qspi_offset_addr_kernel} $filesize
+sf update ${qspi_offset_addr_rootfs} ${qspi_offset_addr_rootfs} $filesize
+```
 
-fatload mmc 0:1 0 qspi/bitstream.itb    # fpga.rbf for Cyclone V devices
-sf update 0 ${qspi_offset_addr_bitstream} $filesize
+For Mercury+ AA1:
 
-fatload mmc 0:1 0 qspi/uImage
-sf update 0 ${qspi_offset_addr_kernel} $filesize
+```
+mmc dev 0
 
-fatload mmc 0:1 0 qspi/uramdisk
-sf update 0 ${qspi_offset_addr_rootfs} $filesize
+fatload mmc 0:1 ${qspi_offset_addr_spl} qspi/u-boot-splx4.sfp
+fatload mmc 0:1 ${qspi_offset_addr_u-boot} qspi/u-boot.img
+fatload mmc 0:1 ${qspi_offset_addr_boot-script} qspi/boot.scr
+fatload mmc 0:1 ${qspi_offset_addr_devicetree} qspi/devicetree.dtb
+fatload mmc 0:1 ${qspi_offset_addr_bitstream} qspi/bitstream.itb
+fatload mmc 0:1 ${qspi_offset_addr_kernel} qspi/uImage
+fatload mmc 0:1 ${qspi_offset_addr_rootfs} qspi/uramdisk
+
+altera_set_storage QSPI
+sf probe
+
+sf update ${qspi_offset_addr_spl} ${qspi_offset_addr_spl} $filesize
+sf update ${qspi_offset_addr_u-boot} ${qspi_offset_addr_u-boot} $filesize
+sf update ${qspi_offset_addr_boot-script} ${qspi_offset_addr_boot-script} $filesize
+sf update ${qspi_offset_addr_devicetree} ${qspi_offset_addr_devicetree} $filesize
+sf update ${qspi_offset_addr_bitstream} ${qspi_offset_addr_bitstream} $filesize
+sf update ${qspi_offset_addr_kernel} ${qspi_offset_addr_kernel} $filesize
+sf update ${qspi_offset_addr_rootfs} ${qspi_offset_addr_rootfs} $filesize
 ```
 
 5. Remove the SD card and configure the hardware for QSPI boot.
@@ -310,18 +332,31 @@ run qspiload
 run qspiboot
 ```
 
-#### QSPI Flash Layouts
+#### QSPI Flash Layout for Mercury SA1 and Mercury+ SA2
 
-Partition | Filename | Offset | Size
---- | --- | --- | ---
-U-Boot SPL | u-boot-splx4.sfp | 0x0 | 0x80000
-U-Boot | u-boot.img | 0x100000 | 0x80000
-U-Boot environment | - | 0x180000 | 0x80000
-U-Boot script | boot.scr | 0x200000 | 0x80000
-Linux devicetree | devicetree.dtb | 0x280000 | 0x80000
-FPGA bitstream | bitstream.itb / fpga.rbf | 0x300000 | 0xd00000
-Linux kernel| uImage | 0x1000000 | 0x1000000
-Rootfs | uramdisk | 0x2000000 | 0x2000000
+Partition          | Filename            | Offset    | Size
+------------------ | ------------------- | --------- | ----------
+U-Boot with SPL    | u-boot-with-spl.sfp | 0x0       | 0x180000
+U-Boot environment | -                   | 0x180000  | 0x80000
+U-Boot script      | boot.scr            | 0x200000  | 0x80000
+Linux devicetree   | devicetree.dtb      | 0x280000  | 0x80000
+FPGA bitstream     | fpga.rbf            | 0x300000  | 0xd00000
+Linux kernel       | uImage              | 0x1000000 | 0x1000000
+Rootfs             | uramdisk            | 0x2000000 | 0x2000000
+
+
+#### QSPI Flash Layout for Mercury+ AA1
+
+Partition          | Filename         | Offset    | Size
+------------------ | ---------------- | --------- | ---------
+U-Boot SPL         | u-boot-splx4.sfp | 0x0       | 0x80000
+U-Boot             | u-boot.img       | 0x100000  | 0x80000
+U-Boot environment | -                | 0x180000  | 0x80000
+U-Boot script      | boot.scr         | 0x200000  | 0x80000
+Linux devicetree   | devicetree.dtb   | 0x280000  | 0x80000
+FPGA bitstream     | bitstream.itb    | 0x300000  | 0xd00000
+Linux kernel       | uImage           | 0x1000000 | 0x1000000
+Rootfs             | uramdisk         | 0x2000000 | 0x2000000
 
 
 Last Page: [Command Line Interface CLI](./3_CLI.md)
