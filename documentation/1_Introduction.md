@@ -45,8 +45,7 @@ Date | Rev | Author | Changes
 2018-03-21 | 1.6 | Mariusz Glebocki | Updates for release v1.6
 2018-11-22 | 1.7 | Wojciech Tatarski | Updates for release v1.7
 2019-02-22 | 1.8 | Joanna Brozek | Updates for release v1.8
-2023-11-03 | 1.9 | Andreas Bürkler | Update to newer version
-
+2024-02-29 | 1.9 | Andreas Bürkler | Update for Quartus 2023.1 / Linux kernel 6.1 / U-Boot 2023.01 / Buildroot 2023.05
 
 ###  Build Environment
 
