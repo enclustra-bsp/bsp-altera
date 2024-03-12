@@ -18,7 +18,7 @@ It can happen that all bits of the configuration register 1 of the QSPI flash de
 
 #### Affected hardware:
 
-This issue was only observed on Mercury+ AA1 module equipped on Mercury ST1 base board.
+This issue was observed on Mercury SA1 and Mercury+ AA1 module equipped on Mercury ST1 base board.
 
 #### Description
 
