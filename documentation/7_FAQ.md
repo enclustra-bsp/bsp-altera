@@ -2,6 +2,24 @@
 
 ## FAQ
 
+### U-Boot Environment
+
+U-Boot is using variables from the default environment. Moreover, the boot scripts used by U-Boot also rely on those variables. If the environment was changed and saved earlier, U-Boot will always use these saved environment variables on a fresh boot, even after changing the U-Boot environment. To restore the default environment, run the following command in the U-Boot command line:
+
+```
+env default -a
+```
+
+This will not overwrite the stored environment but will only restore the default one in the current run. To permanently restore the default environment, the `saveenv` command has to be invoked.
+
+> **_Note:_**  A `*** Warning - bad CRC, using default environment` warning message that appears when booting into U-Boot indicates that the default environment will be loaded.
+
+Boot storage | Offset            | Size
+------------ | ----------------- | ---
+MMC          | partition 1 (FAT) | 0x80000
+eMMC         | partition 1 (FAT) | 0x80000
+QSPI         | 0x180000          | 0x80000
+
 ### How to script U-Boot?
 
 All U-Boot commands can be automated by scripting, so that it is much more convenient to deploy flash images to the hardware.
@@ -58,9 +76,11 @@ mkimage -T script -C none -n "QSPI flash commands" -d cmd.txt cmd.img
 cp cmd.img /tftpboot
 ```
 
-And finally, load the file on the target platform in U-boot and execute it, like this (after step 5 Setup U-Boot connection parameters, in the user documentation):
+And finally, load the file on the target platform in U-boot and execute it, like this:
 
 ```
+setenv ipaddr 192.168.1.10
+setenv serverip 192.168.1.1
 tftpboot 0x10000000 cmd.img
 source 0x10000000
 ```
@@ -75,8 +95,8 @@ In order to program a flash memory from Linux, a script like the following one c
 
 getsize ()
 {
-        local  size=`ls -al $1 | awk '{ print $5 }'`
-        echo "$size"
+    local  size=`ls -al $1 | awk '{ print $5 }'`
+    echo "$size"
 }
 
 SPL_FILE="u-boot-splx4.sfp"

@@ -6,19 +6,18 @@ In order to build the software for a chosen board using the GUI, please follow t
 
 1. Clone the build environment repository with:
 
-```
-git clone https://github.com/enclustra-bsp/bsp-altera.git
-```
+   ```
+   git clone https://github.com/enclustra-bsp/bsp-altera.git
+   ```
 
-> **_Note:_**  By default the build script will fetch and build the latest EBE release. With the following command the development branch can be used. Please note that this branch is under development and the resulting software may be unstable. \
-> `git clone https://github.com/enclustra-bsp/bsp-altera.git -b update`
-
+   > **_Note:_**  By default the build script will fetch and build the latest EBE release. With the following command the development branch can be used. Please note that this branch is under development and the resulting software may be unstable. \
+   > `git clone https://github.com/enclustra-bsp/bsp-altera.git -b update`
 
 2. Change to the bsp-altera directory:
 
-```
-cd bsp-altera
-```
+   ```
+   cd bsp-altera
+   ```
 
 3. Run the `./build.sh` script.
 
@@ -28,7 +27,7 @@ cd bsp-altera
 
 5. Choose the configuration.
 
-This page is only visible after at least one configuration was created. The configuration files are stored in `${HOME}/.ebe/history-altera` directory.
+   This page is only visible after at least one configuration was created. The configuration files are stored in `${HOME}/.ebe/history-altera` directory.
 
    ![Choose config](./images/choose_config_altera.png)
 
@@ -46,7 +45,7 @@ This page is only visible after at least one configuration was created. The conf
 
 9. Choose which targets available for the chosen device family will be fetched.
 
-    ![Choose targets](./images/fetch.png)
+   ![Choose targets](./images/fetch.png)
 
 10. Choose which targets will be built. On the bottom of the screen a short description of a highlighted target is displayed. In order to use the default target configuration enable the `Load initial ... configuration` checkbox. If changes have been made to the target, disable this checkbox, so that the changes are not overwritten during the build process.
 

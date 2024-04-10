@@ -8,90 +8,81 @@ All the guides in this section require the user to build the required files for 
 
 > **_Note:_**  Default target output directories are named according to the following directory naming scheme: `out_<timestamp>_<module>_<board>_<bootmode>`
 
-As a general note on U-Boot used in all the following guides: U-Boot is using variables from the default environment. Moreover, the boot scripts used by U-Boot also rely on those variables. If the environment was changed and saved earlier, U-Boot will always use these saved environment variables on a fresh boot, even after changing the U-Boot environment. To restore the default environment, run the following command in the U-Boot command line:
-
-```
-env default -a
-```
-
-This will not overwrite the stored environment but will only restore the default one in the current run. To permanently restore the default environment, the `saveenv` command has to be invoked.
-
-> **_Note:_**  A `*** Warning - bad CRC, using default environment` warning message that appears when booting into U-Boot indicates that the default environment will be loaded.
-
-Boot storage | Offset | Size
---- | --- | ---
-MMC | partition 1 (FAT) | 0x80000
-eMMC | partition 1 (FAT) | 0x80000
-QSPI | 0x180000 | 0x80000
-
-
 ### SD Card Partitioning
 
-Run fdisk tool:
+Following guide explains how an SD card is prepared with the required partitions. The partitions are setup as described in following table.
 
-```
-fdisk /dev/sdX
-# where X is the letter of the device
-```
+Partition | Type       | Size       | Usage
+--------- | ---------- | ---------- | -----
+1         | FAT        | 100 Mbyte  | Boot partition
+2         | RAW (0xA2) | 2 Mbyte    | SPL bootloader
+3         | ext4       | >300 Mbyte | Root file system
 
-Within fdisk run the following commands:
+1. Run fdisk tool:
 
-```
-# delete the partition table
-o
-# create a new partition
-n
-# choose primary
-p
-# set number to 2
-2
-# leave default start sector
+   ```
+   fdisk /dev/sdX
+   # where X is the letter of the device
+   ```
 
-# set the size to 2 MiB
-+2M
-# change the partition type
-t
-# set type to Intel Boot Partition
-a2
-# create a new partition
-n
-p
-1
-# leave default start sector
+2. Within fdisk run the following commands:
 
-# set the size to 100 MiB
-+100M
-# set the 1st partition type to FAT32
-t
-1
-c
-# create a new partition
-n
-p
-3
-# leave default start and end sector
+   ```
+   # delete the partition table
+   o
+   # create a new partition
+   n
+   # choose primary
+   p
+   # set number to 2
+   2
+   # leave default start sector
+
+   # set the size to 2 MiB
+   +2M
+   # change the partition type
+   t
+   # set type to Intel Boot Partition
+   a2
+   # create a new partition
+   n
+   p
+   1
+   # leave default start sector
+
+   # set the size to 100 MiB
+   +100M
+   # set the 1st partition type to FAT32
+   t
+   1
+   c
+   # create a new partition
+   n
+   p
+   3
+   # leave default start and end sector
 
 
-# set the 3rd partition type to Linux
-t
-3
-83
-# write changes and exit
-w
-```
+   # set the 3rd partition type to Linux
+   t
+   3
+   83
+   # write changes and exit
+   w
+   ```
 
-Format the 1st and 3rd partitions:
+3. Format the 1st and 3rd partitions:
 
-```
-mkfs.vfat -F 32 -n BOOT /dev/sdX1
-mkfs.ext2 -L rootfs /dev/sdX3
-# where X is the letter of the device
-```
+   ```
+   mkfs.vfat -F 32 -n BOOT /dev/sdX1
+   mkfs.ext2 -L rootfs /dev/sdX3
+   # where X is the letter of the device
+   ```
 
 
 ### Storage Multiplexing
 
-Mercury+ AA1 provides QSPI flash, SD card and eMMC flash, but all these memories are connected to the same IO pins of the SoC device. Mercury SA1 shares SD card and eMMC flash with the same IO pins. The active memory is selected according to the configured boot mode. `altera_set_storage` U-Boot command provides a mechanism to switch the memory device in U-Boot temporarily.
+Mercury+ AA1 provides QSPI flash, SD card and eMMC flash, but all these memories are connected to the same IO pins of the SoC device. Mercury SA1 shares SD card and eMMC flash with the same IO pins. The active memory is selected according to the configured boot mode. `altera_set_storage (MMC|EMMC|QSPI)` U-Boot command provides a mechanism to switch the memory device in U-Boot temporarily.
 
 Examples:
 
@@ -128,12 +119,6 @@ Bus Width: 8-bit
 
 # Switch to QSPI
 => altera_set_storage QSPI
-=> mmc rescan
-dwmci_send_cmd: Timeout on data busy
-dwmci_send_cmd: Timeout on data busy
-dwmci_send_cmd: Timeout on data busy
-dwmci_send_cmd: Timeout on data busy
-Card did not respond to voltage select!
 => sf probe
 SF: Detected S25FL512S_256K with page size 512 Bytes, erase size 256 KiB, total 64 MiB
 ```
@@ -147,43 +132,37 @@ In order to deploy images to an SD card, perform the following steps as root:
 
 2. Copy all required files to the FAT partition on the SD card:
 
-```
-mount /dev/sdX1 /mnt
-cp boot.scr fpga.rbf uImage devicetree.dtb /mnt # For Cyclone V devices
-cp boot.scr u-boot.img bitstream.itb uImage devicetree.dtb /mnt # For Arria 10 devices
-umount /mnt
-# where X is the letter of the device
-```
+   ```
+   mount /dev/sdX1 /mnt
+   cp boot.scr fpga.rbf uImage devicetree.dtb /mnt # For Cyclone V devices
+   cp boot.scr u-boot.img bitstream.itb uImage devicetree.dtb /mnt # For Arria 10 devices
+   umount /mnt
+   # where X is the letter of the device
+   ```
 
 3. Unpack the rootfs to the EXT4 partition on the SD card
 
-```
-mount /dev/sdX3 /mnt
-tar -xf rootfs.tar -C /mnt
-umount /mnt
-# where X is the letter of the device
-```
+   ```
+   mount /dev/sdX3 /mnt
+   tar -xf rootfs.tar -C /mnt
+   umount /mnt
+   # where X is the letter of the device
+   ```
 
 4. Copy the SPL binary to the boot partition on the SD card
 
-```
-dd if=u-boot-splx4.sfp of=/dev/sdX2 # For Arria 10 devices
-dd if=u-boot-with-spl.sfp of=/dev/sdX2 # For Cyclone V devices
-# where X is the letter of the device
-```
-
-If one wants to manually trigger booting from a SD Card, the following command has to be invoked from the U-Boot command line:
-
-```
-run mmc_boot
-```
+   ```
+   dd if=u-boot-with-spl.sfp of=/dev/sdX2 # For Cyclone V devices
+   dd if=u-boot-splx4.sfp of=/dev/sdX2 # For Arria 10 devices
+   # where X is the letter of the device
+   ```
 
 > **_Note:_**  If `saveenv` command is used in U-boot to save the U-Boot environment, a `uboot.env` file will appear on the FAT partition of the SD card.
 
 
 ### eMMC Flash
 
-On the Mercury SA1-R3 and Mercury AA1+ modules the MMC bus lines are shared between eMMC flash and SD card. It is not possible to simultaneously access the SD card and eMMC memory. In the following approach an SD card is used to transfer the data including all the partitions to the eMMC memory.
+On the Mercury SA1-R3 and Mercury AA1+ modules the MMC bus lines are shared between eMMC flash and SD card. It is not possible to access the SD card and eMMC memory simultaneously. In the following approach an SD card is used to transfer the data including all the partitions to the eMMC memory.
 
 1. Prepare 2 bootable SD cards (See section [SD Card Partitioning](#sd-card-partitioning) for the steps required to prepare an SD card):
     - One with a default SD card image, which is only used to boot until U-Boot console.
@@ -195,70 +174,70 @@ On the Mercury SA1-R3 and Mercury AA1+ modules the MMC bus lines are shared betw
 
 4. Copy the SD card content into the DDR memory (assuming the total size is smaller than 512Mbyte)
 
-```
-mmc rescan
-mmc dev 0
-mmc read 0 0 0x100000   # copy 512Mbyte of data (block size = 512bytes)
-```
+   ```
+   mmc rescan
+   mmc dev 0
+   mmc read 0 0 0x100000   # copy 512Mbyte of data (block size = 512bytes)
+   ```
 
 5. Switch to the eMMC memory
 
-```
-altera_set_storage EMMC
-```
+   ```
+   altera_set_storage EMMC
+   ```
 
 6. Copy the data from the DDR memory to the eMMC memory
 
-```
-mmc rescan
-mmc write 0 0 0x100000
-```
+   ```
+   mmc rescan
+   mmc write 0 0 0x100000
+   ```
 
 7. When completed, remove the SD card and configure the hardware for eMMC boot.
 
 8. Optional: If a bigger rootfs partition is required, it can be increased after booting from eMMC memory into Linux. The data on the disk will be preserved while the partition table is modified.
 
-Run fdisk tool:
+   Run fdisk tool:
 
-```
-fdisk /dev/mmcblk0
-```
+   ```
+   fdisk /dev/mmcblk0
+   ```
 
-Within fdisk run the following commands:
+   Within fdisk run the following commands:
 
-```
-# delete rootfs partition
-d
-3
-# show partition table
-p
+   ```
+   # delete rootfs partition
+   d
+   3
+   # show partition table
+   p
 
-# as example, following is shown
-Device       Boot StartCHS    EndCHS        StartLBA     EndLBA    Sectors  Size Id Type
-/dev/mmcblk0p1    0,32,33     12,223,19         2048     206847     204800  100M  c Win95 FAT32 (LBA)
-/dev/mmcblk0p2    12,223,20   13,33,20        206848     210943       4096 2048K a2 Unknow
+   # as example, following is shown
+   Device       Boot StartCHS    EndCHS        StartLBA     EndLBA    Sectors  Size Id Type
+   /dev/mmcblk0p1    0,32,33     12,223,19         2048     206847     204800  100M  c Win95 FAT32 (LBA)
+   /dev/mmcblk0p2    12,223,20   13,33,20        206848     210943       4096 2048K a2 Unknow
 
-# create a new partition
-n
-p
-3
-# set last sector of a2 partition plus one as first sector, as printed in the partition table in column 'EndLBA'
-210944
-# leave default end sector
+   # create a new partition
+   n
+   p
+   3
+   # set last sector of a2 partition plus one as first sector, as printed in the partition table in column 'EndLBA'
+   210944
+   # leave default end sector
 
-# set the 3rd partition type to Linux
-t
-3
-83
-# write changes and exit
-w
-```
+   # set the 3rd partition type to Linux
+   t
+   3
+   83
+   # write changes and exit
+   w
+   ```
 
-Reboot and run following command to resize the partition
+   Reboot and run following command to resize the partition
 
-```
-resize2fs /dev/mmcblk0p3
-```
+   ```
+   resize2fs /dev/mmcblk0p3
+   ```
 
 > **_Note:_**  If `saveenv` command is used in U-boot to save the U-Boot environment, a `uboot.env` file will appear on the FAT partition of the eMMC flash.
 
@@ -275,62 +254,62 @@ The QSPI flash can be programmed via JTAG with the vendor tools. An alternative 
 
 4. Copy the files from the SD card to the DDR memory and write the data into the QSPI flash
 
-For Mercury SA1 and Mercury+ SA2:
+   For Mercury SA1 and Mercury+ SA2:
 
-```
-mmc dev 0
+   ```
+   mmc dev 0
 
-fatload mmc 0:1 0x10000000 qspi/u-boot-with-spl.sfp
-fatload mmc 0:1 0x10200000 qspi/boot.scr
-fatload mmc 0:1 0x10300000 qspi/devicetree.dtb
-fatload mmc 0:1 0x11000000 qspi/fpga.rbf
-fatload mmc 0:1 0x12000000 qspi/uImage
-fatload mmc 0:1 0x13000000 qspi/uramdisk
+   fatload mmc 0:1 0x10000000 qspi/u-boot-with-spl.sfp
+   fatload mmc 0:1 0x10200000 qspi/boot.scr
+   fatload mmc 0:1 0x10300000 qspi/devicetree.dtb
+   fatload mmc 0:1 0x11000000 qspi/fpga.rbf
+   fatload mmc 0:1 0x12000000 qspi/uImage
+   fatload mmc 0:1 0x13000000 qspi/uramdisk
 
-sf probe
+   sf probe
 
-sf update 0x10000000 ${qspi_offset_addr_spl} ${size_spl}
-sf update 0x10200000 ${qspi_offset_addr_boot-script} ${size_boot-script}
-sf update 0x10300000 ${qspi_offset_addr_devicetree} ${size_devicetree}
-sf update 0x11000000 ${qspi_offset_addr_bitstream} ${size_tstream}
-sf update 0x12000000 ${qspi_offset_addr_kernel} ${size_kernel}
-sf update 0x13000000 ${qspi_offset_addr_rootfs} ${size_rootfs}
-```
+   sf update 0x10000000 ${qspi_offset_addr_spl} ${size_spl}
+   sf update 0x10200000 ${qspi_offset_addr_boot-script} ${size_boot-script}
+   sf update 0x10300000 ${qspi_offset_addr_devicetree} ${size_devicetree}
+   sf update 0x11000000 ${qspi_offset_addr_bitstream} ${size_tstream}
+   sf update 0x12000000 ${qspi_offset_addr_kernel} ${size_kernel}
+   sf update 0x13000000 ${qspi_offset_addr_rootfs} ${size_rootfs}
+   ```
 
-For Mercury+ AA1:
+   For Mercury+ AA1:
 
-```
-mmc dev 0
+   ```
+   mmc dev 0
 
-fatload mmc 0:1 0x10000000 qspi/u-boot-splx4.sfp
-fatload mmc 0:1 0x10100000 qspi/u-boot.img
-fatload mmc 0:1 0x10200000 qspi/boot.scr
-fatload mmc 0:1 0x10300000 qspi/devicetree.dtb
-fatload mmc 0:1 0x11000000 qspi/bitstream.itb
-fatload mmc 0:1 0x12000000 qspi/uImage
-fatload mmc 0:1 0x13000000 qspi/uramdisk
+   fatload mmc 0:1 0x10000000 qspi/u-boot-splx4.sfp
+   fatload mmc 0:1 0x10100000 qspi/u-boot.img
+   fatload mmc 0:1 0x10200000 qspi/boot.scr
+   fatload mmc 0:1 0x10300000 qspi/devicetree.dtb
+   fatload mmc 0:1 0x11000000 qspi/bitstream.itb
+   fatload mmc 0:1 0x12000000 qspi/uImage
+   fatload mmc 0:1 0x13000000 qspi/uramdisk
 
-altera_set_storage QSPI
-sf probe
+   altera_set_storage QSPI
+   sf probe
 
-sf update 0x10000000 ${qspi_offset_addr_spl} ${size_spl}
-sf update 0x10100000 ${qspi_offset_addr_u-boot} ${size_u-boot}
-sf update 0x10200000 ${qspi_offset_addr_boot-script} ${size_boot-script}
-sf update 0x10300000 ${qspi_offset_addr_devicetree} ${size_devicetree}
-sf update 0x11000000 ${qspi_offset_addr_bitstream} ${size_bitstream}
-sf update 0x12000000 ${qspi_offset_addr_kernel} ${size_kernel}
-sf update 0x13000000 ${qspi_offset_addr_rootfs} ${size_rootfs}
-```
+   sf update 0x10000000 ${qspi_offset_addr_spl} ${size_spl}
+   sf update 0x10100000 ${qspi_offset_addr_u-boot} ${size_u-boot}
+   sf update 0x10200000 ${qspi_offset_addr_boot-script} ${size_boot-script}
+   sf update 0x10300000 ${qspi_offset_addr_devicetree} ${size_devicetree}
+   sf update 0x11000000 ${qspi_offset_addr_bitstream} ${size_bitstream}
+   sf update 0x12000000 ${qspi_offset_addr_kernel} ${size_kernel}
+   sf update 0x13000000 ${qspi_offset_addr_rootfs} ${size_rootfs}
+   ```
 
 5. Remove the SD card and configure the hardware for QSPI boot.
 
-If one wants to manually trigger booting from QSPI flash, the following commands have to be invoked from the U-Boot command line:
+   If one wants to manually trigger booting from QSPI flash, the following commands have to be invoked from the U-Boot command line:
 
-```
-sf probe
-run qspiload
-run qspiboot
-```
+   ```
+   sf probe
+   run qspiload
+   run qspiboot
+   ```
 
 #### QSPI Flash Layout for Mercury SA1 and Mercury+ SA2
 

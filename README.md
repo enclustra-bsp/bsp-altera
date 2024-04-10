@@ -9,4 +9,4 @@ For automating the build process, a command line interface is available.
 
 Please refer to the [user documentation](documentation/1_Introduction.md) for more information on the usage of the build system.
 
-Copyright (c) 2015-2023, Enclustra GmbH, Switzerland
+Copyright (c) 2015-2024, Enclustra GmbH, Switzerland

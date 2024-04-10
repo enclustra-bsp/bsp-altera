@@ -10,17 +10,17 @@ If a user wants to modify the FPGA design, the binaries can be updated in two wa
 
 2. By adding the custom binary as argument for the command line interface. E.g.
 
-For Arria 10 devices:
+   For Arria 10 devices:
 
-```
-./build.sh -d Mercury_AA1/Mercury_ST1/MMC -B handoff <absolute-path>/hps_isw_handoff -B bitstream.periph.rbf <absolute-path>/bitstream.periph.rbf -B bitstream.core.rbf <absolute-path>/bitstream.core.rbf
-```
+   ```
+   ./build.sh -d Mercury_AA1/Mercury_ST1/MMC -B handoff <absolute-path>/hps_isw_handoff -B bitstream.periph.rbf <absolute-path>/bitstream.periph.rbf -B bitstream.core.rbf <absolute-path>/bitstream.core.rbf
+   ```
 
-For Cyclone V devices:
+   For Cyclone V devices:
 
-```
-./build.sh -d Mercury_SA1/Mercury_ST1/MMC -B handoff <absolute-path>/hps_isw_handoff -B fpga.rbf <absolute-path>/refdes.rbf
-```
+   ```
+   ./build.sh -d Mercury_SA1/Mercury_ST1/MMC -B handoff <absolute-path>/hps_isw_handoff -B fpga.rbf <absolute-path>/refdes.rbf
+   ```
 
 3. By using the project mode:
 
@@ -51,8 +51,7 @@ If a user wants to modify U-boot, Linux or Buildroot, the following steps can be
 
    - altera-linux: the `devicetree.dtb` and the kernel image file (`uImage`).
 
-   - altera-uboot: the `boot.scr`, the SPL (`u-boot-splx4.sfp` or `u-boot-with-spl.sfp`
-) and the `u-boot.img` file.
+   - altera-uboot: the `boot.scr`, the SPL (`u-boot-splx4.sfp` or `u-boot-with-spl.sfp`) and the `u-boot.img` file.
 
    - buildroot-rootfs: the `rootfs.tar` archive (or the `uramdisk`, depending on which boot device you choose).
 

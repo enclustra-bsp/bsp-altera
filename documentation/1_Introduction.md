@@ -45,7 +45,7 @@ Date | Rev | Author | Changes
 2018-03-21 | 1.6 | Mariusz Glebocki | Updates for release v1.6
 2018-11-22 | 1.7 | Wojciech Tatarski | Updates for release v1.7
 2019-02-22 | 1.8 | Joanna Brozek | Updates for release v1.8
-2024-02-29 | 1.9 | Andreas Bürkler | Update for Quartus 2023.1 / Linux kernel 6.1 / U-Boot 2023.01 / Buildroot 2023.05
+2024-04-10 | 1.9 | Andreas Bürkler | Update for Quartus 2023.1 / Linux kernel 6.1 / U-Boot 2023.01 / Buildroot 2023.05
 
 ###  Build Environment
 
@@ -63,31 +63,32 @@ To run the build script a Python 2 interpreter is required.
 
 The build environment requires additional software to be installed as listed below:
 
-Tool |  Comments
---- | ---
-dialog |  Required only in the GUI mode
-make |
-git |
-tar |
-unzip |
-curl |
-wget |
-bc |
-libssl-dev |
-patch |
-rsync |
-autoconf |  Required to build a buildroot rootfs
-g++ |  Required to build a buildroot rootfs
-gcc |
-flex |
-bison |
+Tool         | Comments
+------------ | ---
+dialog       | Required only in the GUI mode
+make         |
+git          |
+tar          |
+bzcat        |
+unzip        |
+curl         |
+wget         |
+bc           |
+libssl-dev   |
+patch        |
+rsync        |
+autoconf     | Required to build a buildroot rootfs
+g++          | Required to build a buildroot rootfs
+gcc          |
+flex         |
+bison        |
 u-boot-tools |
 
 The required packages can be installed with the following commands:
 
 ```
 sudo apt update
-sudo apt install python2 dialog make git tar unzip curl wget bc libssl-dev patch rsync autoconf g++ gcc flex bison u-boot-tools
+sudo apt install python2 dialog make git tar bzip2 unzip curl wget bc libssl-dev patch rsync autoconf g++ gcc flex bison u-boot-tools
 ```
 
 
@@ -111,13 +112,13 @@ The build environment is designed to work with a specific directory structure de
     |       |-- BaseBoard_1
     |-- target_output
 
-Folder | Function
---- | ---
-bin | Remote toolchains installation folder.
-binaries | Additional target binaries download folder.
-sources | master_git_repository clone folder. It contains submodule folders.
-buildscripts | Build system executable files.
-targets | Target configurations are placed here.
+Folder        | Function
+------------- | ---
+bin           | Remote toolchains installation folder.
+binaries      | Additional target binaries download folder.
+sources       | master_git_repository clone folder. It contains submodule folders.
+buildscripts  | Build system executable files.
+targets       | Target configurations are placed here.
 target_output | Folders generated during the build process, which contain the output files after a successful build of every specifc target.
 
 > **_Important:_**  By default, the target output folders are named according to this folder naming scheme:

@@ -85,7 +85,7 @@ To build the default targets of one of the listed devices, call the build.sh scr
 
 ### Select exact device to build
 
-To build the target for an exact device number (e.g. ME-AA1-270-2I2-D11E-NFX3), use the following command to list all possible device options. It will print out an indexed list of device options.
+To build the target for an exact device number (e.g. ME-AA1-270-2I2-D11E-NFX3), use the following command to list all possible device options.
 
 ```
 ./build.sh -d Mercury_AA1/Mercury_ST1/MMC --list-dev-options
@@ -136,8 +136,9 @@ To only fetch or build a specific target, the user can specify those targets wit
 
 To reset the build environment and delete all downloaded code, binaries, tools and built files, the --clean-all option can be used:
 
-    ./build.sh --clean-all
-
+```
+./build.sh --clean-all
+```
 
 
 Last Page: [Graphical User Interface GUI](./2_GUI.md)
