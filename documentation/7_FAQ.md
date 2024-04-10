@@ -14,11 +14,14 @@ This will not overwrite the stored environment but will only restore the default
 
 > **_Note:_**  A `*** Warning - bad CRC, using default environment` warning message that appears when booting into U-Boot indicates that the default environment will be loaded.
 
-Boot storage | Offset            | Size
+Following table shows where the environment is stored depending on the boot mode.
+
+Boot storage | Offset            | Size [bytes]
 ------------ | ----------------- | ---
 MMC          | partition 1 (FAT) | 0x80000
 eMMC         | partition 1 (FAT) | 0x80000
 QSPI         | 0x180000          | 0x80000
+
 
 ### How to script U-Boot?
 

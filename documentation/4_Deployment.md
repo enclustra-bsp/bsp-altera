@@ -271,7 +271,7 @@ The QSPI flash can be programmed via JTAG with the vendor tools. An alternative 
    sf update 0x10000000 ${qspi_offset_addr_spl} ${size_spl}
    sf update 0x10200000 ${qspi_offset_addr_boot-script} ${size_boot-script}
    sf update 0x10300000 ${qspi_offset_addr_devicetree} ${size_devicetree}
-   sf update 0x11000000 ${qspi_offset_addr_bitstream} ${size_tstream}
+   sf update 0x11000000 ${qspi_offset_addr_bitstream} ${size_bitstream}
    sf update 0x12000000 ${qspi_offset_addr_kernel} ${size_kernel}
    sf update 0x13000000 ${qspi_offset_addr_rootfs} ${size_rootfs}
    ```
