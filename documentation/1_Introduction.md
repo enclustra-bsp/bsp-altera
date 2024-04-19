@@ -56,7 +56,6 @@ This chapter describes the usage of the build environment. The whole build envir
 
 The build environment was tested on following host Linux distributions:
 
-- Ubuntu 20.04 LTS
 - Ubuntu 22.04 LTS
 
 To run the build script a Python 2 interpreter is required.
