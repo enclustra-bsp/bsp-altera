@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+Version 1.9 (2024-04-25)
+------------------------
+
+* removed support for Mars MA3, Mercury+ AA1 R1 and Mercury SA1 R1/R2
+* support for Mercury+ ST1 and Mercury+ PE3 baseboards added
+* U-Boot updated to 2023.01
+* Linux kernel updated to 6.1
+* Buildroot updated to 2023.05
+* AA1 preloader is now built as U-Boot SPL / no prebuilt binary is used
+* documentation updated
+
 Version 1.8 (2019-02-22)
 ------------------------
 
